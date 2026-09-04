@@ -105,3 +105,11 @@ if(volumeSlider){
   volumeSlider.addEventListener('change',e=>applyGameVolume(e.target.value));
 }
 applyGameVolume(gameVolume);
+
+
+function applyAdminVolumeVisibility(){
+  const admin = new URLSearchParams(window.location.search).get('admin') === '1';
+  const control = $('#volumeControl');
+  if(control) control.style.display = admin ? 'flex' : 'none';
+}
+applyAdminVolumeVisibility();
