@@ -1,0 +1,16 @@
+PATCH SAUVE KETTY - ORGANISATION GITHUB À LA RACINE
+
+Ce patch est prévu pour l'organisation actuelle de ton dépôt GitHub :
+- battery/
+- buttons/
+- keyboard/
+- sounds/
+- images principales directement à la racine
+- Chewy-Regular.ttf à la racine
+
+À remplacer sur GitHub :
+- game.js
+- style.css
+- index.html
+
+Ne supprime pas tes dossiers battery, buttons, keyboard, sounds ni les images.
