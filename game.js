@@ -7,32 +7,18 @@ let word='', guessed=new Set(), wrong=new Set(), eliminated=new Set(), lives=10,
 let idleTimers=[];
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const music=$('#music');
+const VOLUME_KEY='sauveKettyVolume';
+let gameVolume=Math.max(0,Math.min(100,parseInt(localStorage.getItem(VOLUME_KEY)||'30',10)||0));
 
-const VOLUME_KEY='sauveKettyMasterVolume';
-function loadMasterVolume(){
-  const saved=parseInt(localStorage.getItem(VOLUME_KEY)||'30',10);
-  return Number.isFinite(saved)?Math.max(0,Math.min(100,saved)):30;
-}
-let masterVolume=loadMasterVolume();
-
-function applyMasterVolume(value, save=true){
-  masterVolume=Math.max(0,Math.min(100,Number(value)||0));
-  const v=masterVolume/100;
-
-  // Musique un peu plus douce que les effets
-  if(music) music.volume=Math.min(1, v*0.65);
-
-  // Tous les effets sonores
-  document.querySelectorAll('audio:not(#music)').forEach(a=>{
-    a.volume=v;
-  });
-
-  const slider=document.querySelector('#volumeSlider');
-  const label=document.querySelector('#volumeValue');
-  if(slider) slider.value=String(masterVolume);
-  if(label) label.textContent=masterVolume+'%';
-
-  if(save) localStorage.setItem(VOLUME_KEY,String(masterVolume));
+function applyGameVolume(v){
+  gameVolume=Math.max(0,Math.min(100,Number(v)||0));
+  localStorage.setItem(VOLUME_KEY,String(gameVolume));
+  const n=gameVolume/100;
+  music.volume=n*0.45;
+  document.querySelectorAll('audio:not(#music)').forEach(a=>a.volume=n);
+  const s=$('#volumeSlider'), t=$('#volumeValue');
+  if(s)s.value=String(gameVolume);
+  if(t)t.textContent=gameVolume+'%';
 }
 
 
@@ -50,24 +36,12 @@ function saveWords(list){
   localStorage.setItem('sauveKettyWords',JSON.stringify(WORDS));
 }
 function show(id){$$('.screen').forEach(x=>x.classList.remove('active')); $('#'+id).classList.add('active')}
-function play(id){const a=$(id);try{a.volume=masterVolume/100;a.currentTime=0;a.play().catch(()=>{})}catch(e){}}catch(e){}}
-function say(text){
-  $('#pepperLine').textContent=text||'';
-  if(!text)return;
-  if('speechSynthesis' in window){
-    speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang='fr-FR';
-    u.rate=1.03;
-    u.pitch=1.08;
-    u.volume=masterVolume/100;
-    speechSynthesis.speak(u);
-  }
-}
+function play(id){const a=$(id); try{a.currentTime=0;a.play()}catch(e){}}
+function say(text){$('#pepperLine').textContent=text||''; if(!text)return; if('speechSynthesis' in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='fr-FR';u.rate=1.03;u.pitch=1.08;speechSynthesis.speak(u)}}
 function random(arr){return arr[Math.floor(Math.random()*arr.length)]}
 function chooseWord(){let pool=WORDS.filter(w=>w!==previousWord); word=random(pool.length?pool:WORDS); previousWord=word}
 function resetIdle(){idleTimers.forEach(clearTimeout); idleTimers=[]; idleTimers.push(setTimeout(()=>say(random(['Clique sur une lettre pour trouver le mot.','N’aie pas peur, tu peux cliquer sur une lettre.','Il reste encore quelques lettres à deviner !'])),30000));idleTimers.push(setTimeout(()=>{say('Et bah alors ! J’ai besoin de ton aide ! Clique sur le clavier, pour choisir une lettre.');play('#sfxTimer')},45000));idleTimers.push(setTimeout(()=>{say('Je me sens un peu seul. Tant pis, on jouera une prochaine fois ! Bye bye.');setTimeout(home,4500)},55000))}
-function startGame(){chooseWord(); guessed=new Set();wrong=new Set();eliminated=new Set();lives=10;hintUsed=false;show('game');applyMasterVolume(masterVolume,false);music.currentTime=0;music.play().catch(()=>{});render();say('Bienvenue dans Sauve Ketty. Oulala, il m’arrive un truc. Pour réparer mon système, il faut retrouver un mot de passe. Mais je ne vois plus rien ! J’ai besoin de ton aide !');resetIdle()}
+function startGame(){chooseWord(); guessed=new Set();wrong=new Set();eliminated=new Set();lives=10;hintUsed=false;show('game');music.currentTime=0;music.play().catch(()=>{});render();say('Bienvenue dans Sauve Ketty. Oulala, il m’arrive un truc. Pour réparer mon système, il faut retrouver un mot de passe. Mais je ne vois plus rien ! J’ai besoin de ton aide !');resetIdle()}
 function render(){renderWord();renderKeyboard();$('#batteryImg').src=`battery/${String(lives*10).padStart(2,'0')}.png`;$('#hintBtn').classList.toggle('used',hintUsed);$('#hintBtn img').src=hintUsed?'buttons/hint_done.png':'buttons/hint.png'}
 function renderWord(){const box=$('#word');box.innerHTML='';[...word].forEach(ch=>{const slot=document.createElement('div');slot.className='letter-slot';if(guessed.has(ch)){slot.innerHTML=`<div class="letter">${ch.toUpperCase()}</div><img class="underline" src="underline_yes.png">`}else{slot.innerHTML=`<img class="blur" src="letter_blur.png"><img class="underline" src="underline_no.png">`}box.appendChild(slot)})}
 function renderKeyboard(){const kb=$('#keyboard');kb.innerHTML='';const rows=['ABCDEFGHIJ','KLMNOPQRS','TUVWXYZ'];rows.forEach(r=>{const row=document.createElement('div');row.className='key-row';[...r].forEach(L=>{const l=L.toLowerCase(),b=document.createElement('button');b.className='key';let path=`keyboard/normal/${L}.png`;if(guessed.has(l))path=`keyboard/right/${L}-right.png`;if(wrong.has(l))path=`keyboard/false/${L}-false.png`;if(eliminated.has(l)){b.classList.add('disabled');path=`keyboard/false/${L}-false.png`}b.innerHTML=`<img src="${path}" alt="${L}">`;b.disabled=guessed.has(l)||wrong.has(l)||eliminated.has(l);b.addEventListener('click',()=>pick(l));row.appendChild(b)});kb.appendChild(row)})}
@@ -125,10 +99,9 @@ function applyAdminMode(){
 }
 applyAdminMode();
 
-
 const volumeSlider=$('#volumeSlider');
 if(volumeSlider){
-  volumeSlider.addEventListener('input',e=>applyMasterVolume(e.target.value,true));
-  volumeSlider.addEventListener('change',e=>applyMasterVolume(e.target.value,true));
+  volumeSlider.addEventListener('input',e=>applyGameVolume(e.target.value));
+  volumeSlider.addEventListener('change',e=>applyGameVolume(e.target.value));
 }
-applyMasterVolume(masterVolume,false);
+applyGameVolume(gameVolume);
