@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Sauve Ketty</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <section id="intro" class="screen active intro-screen">
+    <div class="intro-actions">
+      <button id="startBtn" class="big-btn">JOUER</button>
+      <button id="rulesBtn" class="ghost-btn">RÈGLES</button>
+      <button id="settingsBtn" class="ghost-btn" style="display:none">PARAMÈTRES</button>
+    </div>
+  </section>
+
+  <section id="game" class="screen game-screen">
+    <div class="top-left">
+      <img class="header" src="assets/images/header.png" alt="Trouve le bon mot !">
+      <button id="hintBtn" class="icon-btn clue"><img src="assets/images/buttons/hint.png" alt="Indice"></button>
+    </div>
+    <button id="quitBtn" class="icon-btn quit"><img src="assets/images/buttons/quit.png" alt="Quitter"></button>
+    <div id="word" class="word"></div>
+    <div class="battery-wrap"><img id="batteryImg" src="assets/images/battery/100.png" alt="Batterie"></div>
+    <div class="prompt"><span>CHOISIS UNE LETTRE</span><img src="assets/images/arrows.png" alt=""></div>
+    <div id="keyboard" class="keyboard"></div>
+    <div id="pepperLine" class="speech-line" aria-live="polite"></div>
+  </section>
+
+  <section id="end" class="screen end-screen">
+    <img id="endImage" class="end-image" src="assets/images/sauve_ketty_win.png" alt="Résultat">
+    <div id="endText" class="end-text"></div>
+    <button id="againBtn" class="big-btn">REJOUER</button>
+    <button id="homeBtn" class="ghost-btn">ACCUEIL</button>
+  </section>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-card">
+      <h2 id="modalTitle"></h2>
+      <p id="modalText"></p>
+      <div id="modalExtra"></div>
+      <div id="modalActions" class="modal-actions"></div>
+    </div>
+  </div>
+</div>
+
+<audio id="music" src="assets/sounds/hoomano_music_theme_sauve_pepper.ogg" loop preload="auto"></audio>
+<audio id="sfxGood" src="assets/sounds/hoomano_sfx_good_answer.ogg" preload="auto"></audio>
+<audio id="sfxWin" src="assets/sounds/hoomano_sfx_victory_1.ogg" preload="auto"></audio>
+<audio id="sfxLose" src="assets/sounds/hoomano_sfx_lose_game.ogg" preload="auto"></audio>
+<audio id="sfxTimer" src="assets/sounds/hoomano_sfx_timer_5s.ogg" preload="auto"></audio>
+<audio id="sfxHint" src="assets/sounds/hoomano_sfx_help_button.ogg" preload="auto"></audio>
+<audio id="sfxLife" src="assets/sounds/hoomano_sfx_lose_life.ogg" preload="auto"></audio>
+<audio id="sfxQuit" src="assets/sounds/hoomano_sfx_quit_app.ogg" preload="auto"></audio>
+<script src="game.js"></script>
+</body>
+</html>
