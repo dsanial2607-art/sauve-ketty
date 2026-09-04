@@ -99,17 +99,28 @@ function applyAdminMode(){
 }
 applyAdminMode();
 
-const volumeSlider=$('#volumeSlider');
-if(volumeSlider){
-  volumeSlider.addEventListener('input',e=>applyGameVolume(e.target.value));
-  volumeSlider.addEventListener('change',e=>applyGameVolume(e.target.value));
-}
 applyGameVolume(gameVolume);
 
 
-function applyAdminVolumeVisibility(){
+
+
+function installAdminVolumeControl(){
   const admin = new URLSearchParams(window.location.search).get('admin') === '1';
-  const control = $('#volumeControl');
-  if(control) control.style.display = admin ? 'flex' : 'none';
+  if(!admin || $('#volumeControl')) return;
+
+  const box = document.createElement('div');
+  box.id = 'volumeControl';
+  box.className = 'volume-control';
+  box.innerHTML = `
+    <span aria-hidden="true">🔊</span>
+    <input id="volumeSlider" type="range" min="0" max="100" step="5" value="${gameVolume}" aria-label="Volume du jeu">
+    <span id="volumeValue">${gameVolume}%</span>
+  `;
+  document.body.appendChild(box);
+
+  const slider = $('#volumeSlider');
+  slider.addEventListener('input', e => applyGameVolume(e.target.value));
+  slider.addEventListener('change', e => applyGameVolume(e.target.value));
+  applyGameVolume(gameVolume);
 }
-applyAdminVolumeVisibility();
+installAdminVolumeControl();
