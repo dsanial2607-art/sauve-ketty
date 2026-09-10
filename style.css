@@ -2,8 +2,8 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body,#app{margin:0;width:100%;height:100%;overflow:hidden;background:#00c7d6;font-family:Chewy,Arial,sans-serif;color:#fff}
 button{font:inherit;border:0;cursor:pointer}.screen{display:none;width:100vw;height:100vh;position:relative}.screen.active{display:block}
-.intro-screen{background:#00c7d6 url('sauve_ketty_intro.png') center/cover no-repeat;display:none;align-items:flex-end;justify-content:center;padding:3vh}.intro-screen.active{display:flex}
-.intro-actions{display:flex;gap:1vw;align-items:center;justify-content:center;background:rgba(255,255,255,.20);backdrop-filter:blur(4px);padding:1vh 1.4vw;border-radius:22px}.intro-kicker{letter-spacing:.2em;font:700 1.3vw Arial,sans-serif}.intro-card h1{font-size:6.5vw;margin:.2em 0 .05em;text-shadow:0 .7vw rgba(0,0,0,.12)}.intro-card p{font:700 1.7vw/1.3 Arial,sans-serif;margin:0 0 1.4em}
+.intro-screen{background:#00c7d6 url('sauve_ketty_intro_kettybot.jpg') center/cover no-repeat;display:none;align-items:flex-end;justify-content:center;padding:3vh}.intro-screen.active{display:flex}
+.intro-actions{display:flex;gap:1vw;align-items:center;justify-content:center;background:rgba(255,255,255,.20);padding:1vh 1.4vw;border-radius:22px}.intro-kicker{letter-spacing:.2em;font:700 1.3vw Arial,sans-serif}.intro-card h1{font-size:6.5vw;margin:.2em 0 .05em;text-shadow:0 .7vw rgba(0,0,0,.12)}.intro-card p{font:700 1.7vw/1.3 Arial,sans-serif;margin:0 0 1.4em}
 .big-btn,.ghost-btn{border-radius:18px;padding:1.1vw 3vw;font-size:2.4vw;margin:.3vw}.big-btn{background:#f9c231;color:#573180;box-shadow:0 .55vw 0 #cc8d1f}.ghost-btn{background:#fff;color:#00a0b4;box-shadow:0 .55vw 0 rgba(0,0,0,.12)}
 .game-screen{background:#00c7d6}.top-left{position:absolute;top:3.5vh;left:3vw;width:43vw;height:17vh}.header{width:100%;height:100%;object-fit:contain}.icon-btn{background:transparent;padding:0}.icon-btn img{display:block}.clue{position:absolute;right:-11vw;top:7vh}.clue img{height:12vh}.clue.used img{filter:grayscale(1);opacity:.5}.quit{position:absolute;top:4vh;right:2.5vw}.quit img{height:5vh}
 .word{position:absolute;top:16vh;left:8vw;width:73vw;height:20vh;display:flex;justify-content:center;align-items:flex-end;gap:.4vw}.letter-slot{width:5.5vw;height:17vh;position:relative;text-align:center}.letter-slot .letter{font-size:9vh;text-shadow:.3vw .7vh #0099ac;line-height:14vh}.letter-slot .blur{width:5.5vw;height:14vh;object-fit:contain}.underline{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:4.2vw;height:.7vh}
@@ -28,3 +28,5 @@ button{font:inherit;border:0;cursor:pointer}.screen{display:none;width:100vw;hei
 }
 .volume-control input[type=range]{width:180px;height:34px;cursor:pointer}
 #volumeValue{min-width:42px;text-align:right}
+
+.end-image{-webkit-transition:opacity .55s ease,-webkit-transform .55s ease;transition:opacity .55s ease,transform .55s ease}
