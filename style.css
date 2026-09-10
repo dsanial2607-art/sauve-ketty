@@ -57,3 +57,10 @@ button{font:inherit;border:0;cursor:pointer}.screen{display:none;width:100vw;hei
   max-height:62vh;
   margin:0 auto;
 }
+
+/* KettyBot: visual d'accueil selon la langue */
+#intro{
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+}

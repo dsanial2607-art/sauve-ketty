@@ -1,3 +1,19 @@
+function updateLanguageBackground(){
+ var frImg='sauve_ketty_intro_kettybot.jpg';
+ var enImg='sauve_ketty_intro_en.jpg';
+ var src=(lang==='en'?enImg:frImg);
+
+ var intro=byId('intro');
+ if(intro){
+   intro.style.backgroundImage="url('"+src+"')";
+   intro.style.backgroundSize='cover';
+   intro.style.backgroundPosition='center center';
+   intro.style.backgroundRepeat='no-repeat';
+ }
+
+ var introImage=byId('introImage');
+ if(introImage) introImage.src=src;
+}
 /* Sauve Ketty — FR/EN + menu administrateur KettyBot */
 var LANG_KEY='sauveKettyLang', SETTINGS_KEY='sauveKettyAudioV2';
 var lang=localStorage.getItem(LANG_KEY)||'fr';
@@ -27,6 +43,8 @@ function paintLanguage(){
  byId('homeBtn').innerHTML=lang==='fr'?'ACCUEIL':'HOME';
  var p=document.querySelector('.prompt span');if(p)p.innerHTML=lang==='fr'?'CHOISIS UNE LETTRE':'CHOOSE A LETTER';
  if(lang==='fr'){addClass(byId('frBtn'),'active-lang');removeClass(byId('enBtn'),'active-lang')}else{addClass(byId('enBtn'),'active-lang');removeClass(byId('frBtn'),'active-lang')}
+
+ updateLanguageBackground();
 }
 function show(id){var s=all('.screen');for(var i=0;i<s.length;i++)removeClass(s[i],'active');addClass(byId(id),'active')}
 function safePlay(el){if(!el)return;try{el.pause();el.currentTime=0;var p=el.play();if(p&&typeof p.catch==='function')p.catch(function(){})}catch(e){}}
@@ -164,3 +182,5 @@ byId('testSound').onclick=function(){play('sfxGood')};
 byId('closeSettings').onclick=function(){addClass(byId('settingsModal'),'hidden')};
 applyAudio();paintLanguage();
 try{if(location.search.indexOf('admin=1')>=0)setTimeout(openSettings,300)}catch(e){}
+
+try{updateLanguageBackground();}catch(e){}
