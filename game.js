@@ -67,13 +67,64 @@ function chooseWord(){var pool=[];for(var i=0;i<WORDS.length;i++)if(WORDS[i]!==p
 function clearIdle(){for(var i=0;i<idleTimers.length;i++)clearTimeout(idleTimers[i]);idleTimers=[]}
 function resetIdle(){clearIdle();idleTimers.push(setTimeout(function(){say(lang==='fr'?random(['Clique sur une lettre pour trouver le mot.','N’aie pas peur, tu peux cliquer sur une lettre.','Il reste encore quelques lettres à deviner !']):random(['Tap a letter to find the word.','Go on, choose a letter!','There are still a few letters to find!']))},30000));idleTimers.push(setTimeout(function(){say(lang==='fr'?'Eh bien alors ! J’ai besoin de ton aide ! Choisis une lettre.':'Hey! I need your help! Choose a letter.');play('sfxTimer')},45000));idleTimers.push(setTimeout(function(){say(lang==='fr'?'Je me sens un peu seule. Tant pis, on jouera une prochaine fois ! Bye bye.':'I feel a little lonely. Never mind, we’ll play another time! Bye bye.');setTimeout(home,4500)},55000))}
 function unlockAudio(){var aud=all('audio');for(var i=0;i<aud.length;i++){try{aud[i].load()}catch(e){}}}
+
+function primeAudio(){
+ try{
+   music.volume=0;
+   var p=music.play();
+   if(p&&typeof p.then==='function'){
+     p.then(function(){
+       try{music.pause();music.currentTime=0;music.volume=Math.max(0,Math.min(1,settings.music/100))}catch(e){}
+     }).catch(function(){
+       music.volume=Math.max(0,Math.min(1,settings.music/100));
+     });
+   }else{
+     try{music.pause();music.currentTime=0}catch(e){}
+     music.volume=Math.max(0,Math.min(1,settings.music/100));
+   }
+ }catch(e){
+   try{music.volume=Math.max(0,Math.min(1,settings.music/100))}catch(x){}
+ }
+}
+
 function startGame(){unlockAudio();chooseWord();guessed={};wrong={};eliminated={};lives=10;hintUsed=false;show('game');try{music.currentTime=0}catch(e){}safePlay(music);render();say(lang==='fr'?'Bienvenue dans Sauve Ketty. Oulala, il m’arrive un truc. Pour réparer mon système, il faut retrouver un mot de passe. Mais je ne vois plus rien ! J’ai besoin de ton aide !':'Welcome to Save Ketty! Oh no, something is wrong with me. To repair my system, you need to find a secret word. I can’t see it anymore. I need your help!');resetIdle()}
 function render(){renderWord();renderKeyboard();byId('batteryImg').src='battery/'+(lives===0?'00':String(lives*10))+'.png';var hb=byId('hintBtn');if(hintUsed)addClass(hb,'used');else removeClass(hb,'used');hb.getElementsByTagName('img')[0].src=hintUsed?'buttons/hint_done.png':'buttons/hint.png'}
 function renderWord(){var box=byId('word');box.innerHTML='';for(var i=0;i<word.length;i++){var ch=word.charAt(i),slot=document.createElement('div');slot.className='letter-slot';if(has(guessed,ch))slot.innerHTML='<div class="letter">'+ch.toUpperCase()+'</div><img class="underline" src="underline_yes.png">';else slot.innerHTML='<img class="blur" src="letter_blur.png"><img class="underline" src="underline_no.png">';box.appendChild(slot)}}
 function renderKeyboard(){var kb=byId('keyboard');kb.innerHTML='';var rows=['ABCDEFGHIJ','KLMNOPQRS','TUVWXYZ'];for(var r=0;r<rows.length;r++){var row=document.createElement('div');row.className='key-row';for(var i=0;i<rows[r].length;i++){(function(L){var l=L.toLowerCase(),b=document.createElement('button'),path='keyboard/normal/'+L+'.png';b.className='key';if(has(guessed,l))path='keyboard/right/'+L+'-right.png';if(has(wrong,l)||has(eliminated,l))path='keyboard/false/'+L+'-false.png';if(has(eliminated,l))addClass(b,'disabled');b.innerHTML='<img src="'+path+'" alt="'+L+'">';b.disabled=has(guessed,l)||has(wrong,l)||has(eliminated,l);b.onclick=function(){pick(l)};row.appendChild(b)})(rows[r].charAt(i))}kb.appendChild(row)}}
 function allWordGuessed(){for(var i=0;i<word.length;i++)if(!has(guessed,word.charAt(i)))return false;return true}
-function pick(letter){resetIdle();if(word.indexOf(letter)>=0){guessed[letter]=true;play('sfxGood');say(random(GOOD));render();if(allWordGuessed())setTimeout(function(){finish(true)},700)}else{wrong[letter]=true;lives=Math.max(0,lives-1);play('sfxLife');say(random(BAD));render();if(lives===1)setTimeout(function(){say(lang==='fr'?'Attention, dernière chance pour me sauver !':'Careful! This is your last chance to save me!')},500);if(lives===0)setTimeout(function(){finish(false)},700)}}
-function finish(win){clearIdle();try{music.pause()}catch(e){}show('end');var img=byId('endImage');img.style.opacity='0';img.style.webkitTransform='scale(.88)';img.style.transform='scale(.88)';img.src=win?'sauve_ketty_win_kettybot.jpg':'sauve_ketty_lose_kettybot.jpg';byId('endText').innerHTML=win?(lang==='fr'?'Bravo ! Tu as trouvé le bon mot ! Ketty est réparée !':'Well done! You found the word! Ketty is repaired!'):(lang==='fr'?'Le mot à trouver était « '+word.toUpperCase()+' ». Heureusement, Ketty est incassable !':'The word was “'+word.toUpperCase()+'”. Luckily, Ketty is unbreakable!');setTimeout(function(){img.style.opacity='1';img.style.webkitTransform='scale(1)';img.style.transform='scale(1)'},80);if(win){play('sfxWin');setTimeout(function(){say(lang==='fr'?'Bravo ! Tu as trouvé le bon mot ! Je suis complètement réparée ! Merci.':'Well done! You found the word! I am completely repaired. Thank you!')},300)}else{play('sfxLose');setTimeout(function(){say(lang==='fr'?'Ouf ! Heureusement que je suis incassable ! Le mot à trouver était '+word+'.':'Phew! Luckily I am unbreakable! The word was '+word+'.')},300)}}
+function pick(letter){resetIdle();if(word.indexOf(letter)>=0){guessed[letter]=true;play('sfxGood');say(random(GOOD));render();if(allWordGuessed())finish(true)}else{wrong[letter]=true;lives=Math.max(0,lives-1);play('sfxLife');say(random(BAD));render();if(lives===1)setTimeout(function(){say(lang==='fr'?'Attention, dernière chance pour me sauver !':'Careful! This is your last chance to save me!')},500);if(lives===0)finish(false)}}
+function finish(win){
+ clearIdle();
+ try{music.pause()}catch(e){}
+ show('end');
+
+ var img=byId('endImage');
+ img.style.display='block';
+ img.style.opacity='1';
+ img.style.visibility='visible';
+ img.style.webkitTransform='none';
+ img.style.transform='none';
+ img.src=win?'sauve_ketty_win_kettybot.jpg':'sauve_ketty_lose_kettybot.jpg';
+
+ byId('endText').innerHTML=win
+   ?(lang==='fr'?'Bravo ! Tu as trouvé le bon mot ! Ketty est réparée !':'Well done! You found the word! Ketty is repaired!')
+   :(lang==='fr'?'Le mot à trouver était « '+word.toUpperCase()+' ». Heureusement, Ketty est incassable !':'The word was “'+word.toUpperCase()+'”. Luckily, Ketty is unbreakable!');
+
+ /* IMPORTANT KETTYBOT:
+    play the final voice immediately, before the end SFX, so the old WebView
+    does not block it because of delayed/autoplay rules or simultaneous media. */
+ if(win){
+   say(lang==='fr'
+     ?'Bravo ! Tu as trouvé le bon mot ! Je suis complètement réparée ! Merci.'
+     :'Well done! You found the word! I am completely repaired. Thank you!');
+   setTimeout(function(){play('sfxWin')},900);
+ }else{
+   say(lang==='fr'
+     ?'Ouf ! Heureusement que je suis incassable ! Le mot à trouver était '+word+'.'
+     :'Phew! Luckily I am unbreakable! The word was '+word+'.');
+   setTimeout(function(){play('sfxLose')},900);
+ }
+}
 function closeModal(){addClass(byId('modal'),'hidden')}
 function modal(title,text,yesFn){byId('modalTitle').innerHTML=title;byId('modalText').innerHTML=text;var a=byId('modalActions');a.innerHTML='';var no=document.createElement('button');no.innerHTML=lang==='fr'?'NON':'NO';no.onclick=closeModal;a.appendChild(no);if(yesFn){var yes=document.createElement('button');yes.innerHTML=lang==='fr'?'OUI':'YES';yes.onclick=function(){yesFn();closeModal()};a.appendChild(yes)}removeClass(byId('modal'),'hidden')}
 function useHint(){resetIdle();if(hintUsed){say(lang==='fr'?'Tu as déjà utilisé ton indice.':'You have already used your hint.');return}play('sfxHint');modal(lang==='fr'?'Indice':'Hint',lang==='fr'?'Attention, tu n’as droit qu’à un seul indice. Veux-tu vraiment l’utiliser maintenant ?':'Careful, you only have one hint. Do you really want to use it now?',function(){hintUsed=true;play('sfxLife');say(lang==='fr'?'Et hop, je vais t’enlever quelques mauvaises lettres !':'Here we go! I’ll remove a few wrong letters for you!');var c=[],alpha='abcdefghijklmnopqrstuvwxyz';for(var i=0;i<alpha.length;i++){var x=alpha.charAt(i);if(word.indexOf(x)<0&&!has(guessed,x)&&!has(wrong,x))c.push(x)}for(var j=0;j<3&&c.length;j++){var k=Math.floor(Math.random()*c.length);eliminated[c.splice(k,1)[0]]=true}render()})}
@@ -84,8 +135,8 @@ byId('startBtn').onclick=startGame;byId('rulesBtn').onclick=rules;byId('hintBtn'
 
 
 /* Language buttons */
-byId('frBtn').onclick=function(){setLanguage('fr');say('Je parle français maintenant !')};
-byId('enBtn').onclick=function(){setLanguage('en');say('I speak English now!')};
+byId('frBtn').onclick=function(){primeAudio();setLanguage('fr');say('Je parle français maintenant !')};
+byId('enBtn').onclick=function(){primeAudio();setLanguage('en');say('I speak English now!')};
 
 /* Hidden admin: 3 taps in top-right within 2 seconds + ?admin=1 */
 var tapCount=0,tapTimer=null;

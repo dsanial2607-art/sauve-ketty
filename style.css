@@ -43,3 +43,17 @@ button{font:inherit;border:0;cursor:pointer}.screen{display:none;width:100vw;hei
 .voice-status{margin:15px 0;color:#555;font:700 16px Arial,sans-serif}
 .settings-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 .settings-buttons button{border-radius:14px;padding:12px 18px;background:#f9c231;color:#56317f;font:800 17px Arial,sans-serif;box-shadow:0 5px 0 #cc8d1f}
+
+/* KettyBot end-screen compatibility */
+.end-image{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  -webkit-transform:none !important;
+  transform:none !important;
+  width:auto;
+  height:auto;
+  max-width:72vw;
+  max-height:62vh;
+  margin:0 auto;
+}
