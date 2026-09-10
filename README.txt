@@ -25,3 +25,13 @@ DÉPLOIEMENT GITHUB PAGES
 
 IMPORTANT
 - Pour les visiteurs, utilisez l'URL normale, sans ?admin=1.
+
+
+VERSION FR/EN + ADMIN
+- Choix Français / English sur l'accueil.
+- Les mots anglais ont été adaptés pour être jouables sans accents.
+- Triple-tap invisible dans le coin supérieur droit (3 appuis en moins de 2 s) ouvre Réglages Ketty.
+- Accès de secours : ajouter ?admin=1 à l'URL.
+- Réglages mémorisés : voix, effets sonores, musique.
+- Le panneau indique si speechSynthesis est disponible dans le navigateur.
+IMPORTANT : si la tablette affiche "Voix navigateur disponible : NON", il faudra utiliser des fichiers voix MP3 pour garantir la parole.

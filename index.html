@@ -7,8 +7,12 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="app">
+<div id="app"><div id="adminHotspot" aria-hidden="true"></div>
 <section id="intro" class="screen active intro-screen">
+    <div class="language-switch" id="languageSwitch">
+      <button id="frBtn" class="lang-btn active-lang">🇫🇷 FRANÇAIS</button>
+      <button id="enBtn" class="lang-btn">🇬🇧 ENGLISH</button>
+    </div>
     <div class="intro-actions">
       <button id="startBtn" class="big-btn">JOUER</button>
       <button id="rulesBtn" class="ghost-btn">RÈGLES</button>
@@ -35,6 +39,17 @@
     <button id="againBtn" class="big-btn">REJOUER</button>
     <button id="homeBtn" class="ghost-btn">ACCUEIL</button>
   </section>
+
+  <div id="settingsModal" class="modal hidden">
+    <div class="modal-card settings-card">
+      <h2 id="settingsTitle">Réglages Ketty</h2>
+      <div class="volume-row"><label id="voiceLabel">🗣 Voix de Ketty</label><input id="voiceVolume" type="range" min="0" max="100"><span id="voiceValue"></span></div>
+      <div class="volume-row"><label id="sfxLabel">🔔 Effets sonores</label><input id="sfxVolume" type="range" min="0" max="100"><span id="sfxValue"></span></div>
+      <div class="volume-row"><label id="musicLabel">🎵 Musique</label><input id="musicVolume" type="range" min="0" max="100"><span id="musicValue"></span></div>
+      <div class="voice-status" id="voiceStatus"></div>
+      <div class="settings-buttons"><button id="testVoice">▶ Tester la voix</button><button id="testSound">▶ Tester le son</button><button id="closeSettings">FERMER</button></div>
+    </div>
+  </div>
 
   <div id="modal" class="modal hidden">
     <div class="modal-card">
