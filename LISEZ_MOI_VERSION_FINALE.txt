@@ -1,0 +1,23 @@
+SAUVE KETTY — VERSION FINALE KETTYBOT
+
+Cette version regroupe les dernières modifications :
+- français par défaut au chargement et au retour à l'accueil ;
+- bascule FR / EN ;
+- visuel d'accueil français / anglais ;
+- bandeau de jeu traduit : « Trouve le bon mot ! » / « Find the word! » ;
+- bouton indice traduit : « indice ? » / « Hint ? » ;
+- croix de sortie supprimée de l'écran de jeu ;
+- clavier tactile agrandi ;
+- zones tactiles adaptées au KettyBot ;
+- longueur du mot gérée dynamiquement par le code ;
+- voix MP3 FR / EN ;
+- bon fichier « I speak English now! » ;
+- musique Playful ;
+- volumes à 30 % par défaut ;
+- images victoire / défaite préchargées ;
+- voix de victoire / défaite prioritaires ;
+- menu admin caché conservé.
+
+IMPORTANT :
+Les cases du mot et le clavier restent interactifs et générés en HTML.
+Les nouveaux visuels ne sont pas utilisés comme une image fixe de l'écran de jeu.

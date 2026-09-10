@@ -64,3 +64,92 @@ button{font:inherit;border:0;cursor:pointer}.screen{display:none;width:100vw;hei
   background-position:center center !important;
   background-repeat:no-repeat !important;
 }
+
+/* ===== VERSION FINALE KETTYBOT ===== */
+
+/* Plus de croix de sortie sur l'écran de jeu */
+.quit{display:none !important}
+
+/* Bandeau + indice adaptés */
+.top-left{
+  top:2.5vh;
+  left:3vw;
+  width:42vw;
+  height:15vh;
+}
+.clue{
+  right:-13vw;
+  top:4.5vh;
+}
+.clue img{
+  height:13vh;
+}
+
+/* Mot dynamique : reste adaptable aux mots courts et longs */
+.word{
+  top:15vh;
+  left:13vw;
+  width:67vw;
+  height:19vh;
+  gap:.35vw;
+}
+.letter-slot{
+  width:5.2vw;
+  max-width:74px;
+  min-width:34px;
+  height:16vh;
+}
+.letter-slot .blur{
+  width:100%;
+  height:13vh;
+}
+.letter-slot .letter{
+  font-size:8.5vh;
+  line-height:13vh;
+}
+
+/* Consigne recentrée */
+.prompt{
+  top:36vh;
+  left:26vw;
+  width:36vw;
+  height:8vh;
+}
+
+/* Clavier tactile plus grand */
+.keyboard{
+  left:3vw;
+  bottom:2.5vh;
+  width:76vw;
+  height:48vh;
+  gap:1.2vh;
+}
+.key-row{
+  gap:.65vw;
+}
+.key{
+  width:8.6vh;
+  height:9.2vh;
+  min-width:58px;
+  min-height:58px;
+}
+.key img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+/* Bulle Ketty : garder de la place à droite */
+.speech-line{
+  right:2.2vw;
+  bottom:2.2vh;
+  width:18.5vw;
+  min-height:9vh;
+}
+
+/* Batterie légèrement resserrée */
+.battery-wrap{
+  right:3.2vw;
+  top:7vh;
+  height:61vh;
+}

@@ -1,3 +1,19 @@
+function updateGameLanguageAssets(){
+ var h=byId('gameHeader');
+ var hi=byId('hintImage');
+ if(h){
+   h.src=(lang==='en'?'header_en.png':'header.png');
+   h.alt=(lang==='en'?'Find the word!':'Trouve le bon mot !');
+ }
+ if(hi){
+   if(byId('hintBtn') && byId('hintBtn').className.indexOf('used')!==-1){
+     hi.src=(lang==='en'?'buttons/hint_done_en.png':'buttons/hint_done.png');
+   }else{
+     hi.src=(lang==='en'?'buttons/hint_en.png':'buttons/hint.png');
+   }
+   hi.alt=(lang==='en'?'Hint':'Indice');
+ }
+}
 function updateLanguageBackground(){
  var frImg='sauve_ketty_intro_kettybot.jpg';
  var enImg='sauve_ketty_intro_en.jpg';
@@ -51,6 +67,8 @@ function paintLanguage(){
  if(lang==='fr'){addClass(byId('frBtn'),'active-lang');removeClass(byId('enBtn'),'active-lang')}else{addClass(byId('enBtn'),'active-lang');removeClass(byId('frBtn'),'active-lang')}
 
  updateLanguageBackground();
+
+ updateGameLanguageAssets();
 }
 function show(id){var s=all('.screen');for(var i=0;i<s.length;i++)removeClass(s[i],'active');addClass(byId(id),'active')}
 function safePlay(el){if(!el)return;try{el.pause();el.currentTime=0;var p=el.play();if(p&&typeof p.catch==='function')p.catch(function(){})}catch(e){}}
@@ -156,7 +174,7 @@ function quit(){resetIdle();modal(lang==='fr'?'Quitter':'Quit',lang==='fr'?'Es-t
 function rules(){byId('modalTitle').innerHTML=lang==='fr'?'Règles':'Rules';byId('modalText').innerHTML=lang==='fr'?'Trouve les bonnes lettres pour afficher le bon mot. Une mauvaise lettre fait baisser la batterie. Tu as 10 vies et un seul indice, qui élimine trois mauvaises lettres.':'Find the right letters to reveal the secret word. A wrong letter lowers the battery. You have 10 lives and one hint, which removes three wrong letters.';var a=byId('modalActions');a.innerHTML='';var b=document.createElement('button');b.innerHTML=lang==='fr'?'J’AI COMPRIS':'GOT IT';b.onclick=closeModal;a.appendChild(b);removeClass(byId('modal'),'hidden')}
 function home(){
  resetLanguageToFrench();clearIdle();try{music.pause()}catch(e){}try{if(window.speechSynthesis)window.speechSynthesis.cancel()}catch(e){}show('intro');byId('pepperLine').innerHTML=''}
-byId('startBtn').onclick=startGame;byId('rulesBtn').onclick=rules;byId('hintBtn').onclick=useHint;byId('quitBtn').onclick=quit;byId('againBtn').onclick=startGame;byId('homeBtn').onclick=home;
+byId('startBtn').onclick=startGame;byId('rulesBtn').onclick=rules;byId('hintBtn').onclick=useHint;if(byId('quitBtn'))byId('quitBtn').onclick=quit;byId('againBtn').onclick=startGame;byId('homeBtn').onclick=home;
 
 
 /* Language buttons */
