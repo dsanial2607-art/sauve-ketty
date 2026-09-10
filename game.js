@@ -35,6 +35,12 @@ function removeClass(el,c){if(el.classList)el.classList.remove(c);else el.classN
 function has(obj,k){return obj[k]===true}
 function cleanWord(w){w=String(w||'').toLowerCase();var from='àáâäãåçèéêëìíîïñòóôöõùúûüýÿœ';var to='aaaaaaceeeeiiiinooooouuuuyyoe';for(var i=0;i<from.length;i++)w=w.split(from.charAt(i)).join(to.substr(i,from.charAt(i)==='œ'?2:1));return w.replace(/[^a-z]/g,'')}
 function loadWords(){if(lang==='en')return WORDS_EN.slice(0);try{var saved=JSON.parse(localStorage.getItem('sauveKettyWords')||'null');if(saved&&saved.length){var r=[];for(var i=0;i<saved.length;i++){var x=cleanWord(saved[i]);if(x)r.push(x)}return r}}catch(e){}return DEFAULT_WORDS_FR.slice(0)}
+function resetLanguageToFrench(){
+ lang='fr';
+ try{localStorage.removeItem('kettyLang')}catch(e){}
+ try{sessionStorage.removeItem('kettyLang')}catch(e){}
+ setLanguage('fr');
+}
 function setLanguage(l){lang=l;try{localStorage.setItem(LANG_KEY,l)}catch(e){}WORDS=loadWords();GOOD=l==='fr'?GOOD_FR:GOOD_EN;BAD=l==='fr'?BAD_FR:BAD_EN;paintLanguage()}
 function paintLanguage(){
  byId('startBtn').innerHTML=lang==='fr'?'JOUER':'PLAY';
@@ -148,7 +154,8 @@ function modal(title,text,yesFn){byId('modalTitle').innerHTML=title;byId('modalT
 function useHint(){resetIdle();if(hintUsed){say(lang==='fr'?'Tu as déjà utilisé ton indice.':'You have already used your hint.');return}play('sfxHint');modal(lang==='fr'?'Indice':'Hint',lang==='fr'?'Attention, tu n’as droit qu’à un seul indice. Veux-tu vraiment l’utiliser maintenant ?':'Careful, you only have one hint. Do you really want to use it now?',function(){hintUsed=true;play('sfxLife');say(lang==='fr'?'Et hop, je vais t’enlever quelques mauvaises lettres !':'Here we go! I’ll remove a few wrong letters for you!');var c=[],alpha='abcdefghijklmnopqrstuvwxyz';for(var i=0;i<alpha.length;i++){var x=alpha.charAt(i);if(word.indexOf(x)<0&&!has(guessed,x)&&!has(wrong,x))c.push(x)}for(var j=0;j<3&&c.length;j++){var k=Math.floor(Math.random()*c.length);eliminated[c.splice(k,1)[0]]=true}render()})}
 function quit(){resetIdle();modal(lang==='fr'?'Quitter':'Quit',lang==='fr'?'Es-tu sûr de vouloir quitter le jeu ?':'Are you sure you want to quit the game?',function(){play('sfxQuit');say(lang==='fr'?'Ok. Une autre fois peut-être.':'Okay. Maybe another time.');setTimeout(home,1800)})}
 function rules(){byId('modalTitle').innerHTML=lang==='fr'?'Règles':'Rules';byId('modalText').innerHTML=lang==='fr'?'Trouve les bonnes lettres pour afficher le bon mot. Une mauvaise lettre fait baisser la batterie. Tu as 10 vies et un seul indice, qui élimine trois mauvaises lettres.':'Find the right letters to reveal the secret word. A wrong letter lowers the battery. You have 10 lives and one hint, which removes three wrong letters.';var a=byId('modalActions');a.innerHTML='';var b=document.createElement('button');b.innerHTML=lang==='fr'?'J’AI COMPRIS':'GOT IT';b.onclick=closeModal;a.appendChild(b);removeClass(byId('modal'),'hidden')}
-function home(){clearIdle();try{music.pause()}catch(e){}try{if(window.speechSynthesis)window.speechSynthesis.cancel()}catch(e){}show('intro');byId('pepperLine').innerHTML=''}
+function home(){
+ resetLanguageToFrench();clearIdle();try{music.pause()}catch(e){}try{if(window.speechSynthesis)window.speechSynthesis.cancel()}catch(e){}show('intro');byId('pepperLine').innerHTML=''}
 byId('startBtn').onclick=startGame;byId('rulesBtn').onclick=rules;byId('hintBtn').onclick=useHint;byId('quitBtn').onclick=quit;byId('againBtn').onclick=startGame;byId('homeBtn').onclick=home;
 
 
@@ -184,3 +191,5 @@ applyAudio();paintLanguage();
 try{if(location.search.indexOf('admin=1')>=0)setTimeout(openSettings,300)}catch(e){}
 
 try{updateLanguageBackground();}catch(e){}
+
+try{resetLanguageToFrench();}catch(e){}
