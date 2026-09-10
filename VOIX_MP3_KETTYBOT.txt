@@ -1,0 +1,7 @@
+SAUVE KETTY — VERSION VOIX MP3 FR/EN
+
+Voix intégrées : 25 FR + 25 EN.
+Les MP3 se trouvent dans voices/fr et voices/en.
+Volume par défaut : voix 30 %, effets 30 %, musique 30 %.
+speechSynthesis reste uniquement comme solution de secours pour les phrases non associées à un MP3.
+Le menu administrateur caché reste accessible par 3 appuis rapides en haut à droite et ?admin=1.
